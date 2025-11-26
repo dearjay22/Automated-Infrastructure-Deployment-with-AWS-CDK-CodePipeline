@@ -6,15 +6,14 @@ from aws_cdk import (
 )
 from constructs import Construct
 
-
 class PipelineStack(Stack):
-
-    def __init__(self, scope: Construct, id: str, api_stack, **kwargs):
+    def __init__(self, scope: Construct, id: str, api_stack=None, **kwargs):
         super().__init__(scope, id, **kwargs)
 
         source_output = codepipeline.Artifact()
         build_output = codepipeline.Artifact()
 
+        # GitHub Source
         source_action = cp_actions.CodeStarConnectionsSourceAction(
             action_name="GitHub_Source",
             owner="dearjay22",
@@ -24,6 +23,7 @@ class PipelineStack(Stack):
             output=source_output,
         )
 
+        # CodeBuild Project
         project = codebuild.PipelineProject(
             self,
             "BuildProject",
@@ -37,6 +37,7 @@ class PipelineStack(Stack):
             outputs=[build_output],
         )
 
+        # CloudFormation Deploy
         deploy_action = cp_actions.CloudFormationCreateUpdateStackAction(
             action_name="Deploy_CDK",
             stack_name="ApiInfraStack",

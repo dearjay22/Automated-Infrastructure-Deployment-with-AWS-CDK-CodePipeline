@@ -5,25 +5,27 @@ from aws_cdk import (
 )
 from constructs import Construct
 
-
-class ApiStack(Stack):
-
+class ApiInfraStack(Stack):
     def __init__(self, scope: Construct, id: str, **kwargs):
         super().__init__(scope, id, **kwargs)
 
-        lambda_fn = _lambda.Function(
+        # Lambda function
+        hello_lambda = _lambda.Function(
             self,
             "HelloLambda",
-            runtime=_lambda.Runtime.PYTHON_3_12,
-            handler="handler.handler",
-            code=_lambda.Code.from_asset("lambda")
+            runtime=_lambda.Runtime.PYTHON_3_13,
+            handler="handler.lambda_handler",
+            code=_lambda.Code.from_asset("lambda"),
         )
 
+        # API Gateway
         api = apigw.LambdaRestApi(
             self,
             "HelloApi",
-            handler=lambda_fn,
+            handler=hello_lambda,
             proxy=False
         )
 
-        api.root.add_resource("hello").add_method("GET")
+        # Add GET /hello endpoint
+        hello_resource = api.root.add_resource("hello")
+        hello_resource.add_method("GET")  # GET /hello
