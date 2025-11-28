@@ -3,13 +3,15 @@ from aws_cdk import (
     aws_codepipeline as codepipeline,
     aws_codepipeline_actions as cp_actions,
     aws_codebuild as codebuild,
+    aws_iam as iam,
 )
 from constructs import Construct
 
 class PipelineStack(Stack):
-    def __init__(self, scope: Construct, id: str, api_stack=None, **kwargs):
+    def __init__(self, scope: Construct, id: str, **kwargs):
         super().__init__(scope, id, **kwargs)
 
+        # Artifacts
         source_output = codepipeline.Artifact()
         build_output = codepipeline.Artifact()
 
@@ -23,7 +25,7 @@ class PipelineStack(Stack):
             output=source_output
         )
 
-        # CodeBuild
+        # CodeBuild Project
         project = codebuild.PipelineProject(
             self,
             "BuildProject9062044",
@@ -40,8 +42,8 @@ class PipelineStack(Stack):
         # CloudFormation Deploy
         deploy_action = cp_actions.CloudFormationCreateUpdateStackAction(
             action_name="Deploy_CDK",
-            stack_name="ApiInfraStack",
-            template_path=build_output.at_path("ApiInfraStack.template.json"),
+            stack_name=api_stack.stack_name if api_stack else "ApiStack9062044",
+            template_path=build_output.at_path("ApiStack9062044.template.json"),
             admin_permissions=True
         )
 
