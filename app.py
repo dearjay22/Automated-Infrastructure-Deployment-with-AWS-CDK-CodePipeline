@@ -1,14 +1,19 @@
 #!/usr/bin/env python3
 import aws_cdk as cdk
-from my_cdk_app.api_stack import ApiInfraStack
-from my_cdk_app.pipeline_stack import PipelineStack
+from my_cdk_app.ApiInfraStack import ApiInfraStack
+from my_cdk_app.PipelineStack import PipelineStack
 
 app = cdk.App()
 
-# Deploy the Lambda + API Gateway stack first
-api_stack = ApiInfraStack(app, "ApiInfraStack")
+env = cdk.Environment(
+    account=app.node.try_get_context("aws_account"),
+    region=app.node.try_get_context("aws_region")
+)
 
-# Deploy the CodePipeline stack, pass api_stack if needed
-PipelineStack(app, "PipelineStack", api_stack=api_stack)
+# Deploy Lambda + S3 + DynamoDB stack
+api_stack = ApiInfraStack(app, "ApiInfraStack", env=env)
+
+# Deploy Pipeline stack
+PipelineStack(app, "PipelineStack", env=env, api_stack=api_stack)
 
 app.synth()

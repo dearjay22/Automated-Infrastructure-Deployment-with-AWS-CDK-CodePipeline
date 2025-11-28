@@ -19,22 +19,22 @@ class PipelineStack(Stack):
             owner="dearjay22",
             repo="Automated-Infrastructure-Deployment-with-AWS-CDK-CodePipeline",
             branch="main",
-            connection_arn="arn:aws:codeconnections:us-east-2:141262319565:connection/54c58779-1895-4f91-aacf-89090eb8d3f6",
-            output=source_output,
+            connection_arn="arn:aws:codestar-connections:us-east-1:141262319565:connection/915c367e-3387-496b-ac7b-8849d2629027",
+            output=source_output
         )
 
-        # CodeBuild Project
+        # CodeBuild
         project = codebuild.PipelineProject(
             self,
-            "BuildProject",
-            build_spec=codebuild.BuildSpec.from_source_filename("buildspec.yml"),
+            "BuildProject9062044",
+            build_spec=codebuild.BuildSpec.from_source_filename("buildspec.yml")
         )
 
         build_action = cp_actions.CodeBuildAction(
             action_name="CDK_Build",
             project=project,
             input=source_output,
-            outputs=[build_output],
+            outputs=[build_output]
         )
 
         # CloudFormation Deploy
@@ -42,13 +42,14 @@ class PipelineStack(Stack):
             action_name="Deploy_CDK",
             stack_name="ApiInfraStack",
             template_path=build_output.at_path("ApiInfraStack.template.json"),
-            admin_permissions=True,
+            admin_permissions=True
         )
 
+        # Pipeline
         pipeline = codepipeline.Pipeline(
             self,
-            "Pipeline",
-            pipeline_name="CDK-AutoDeploy-Pipeline",
+            "Pipeline9062044",
+            pipeline_name="CDK-AutoDeploy-Pipeline-9062044"
         )
 
         pipeline.add_stage(stage_name="Source", actions=[source_action])
