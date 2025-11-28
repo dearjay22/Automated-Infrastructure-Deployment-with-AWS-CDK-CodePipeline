@@ -11,9 +11,9 @@ env = cdk.Environment(
 )
 
 # Deploy Lambda + S3 + DynamoDB stack
-ApiInfraStack(app, "ApiInfraStack", env=env)
+api_stack = ApiInfraStack(app, "ApiInfraStack", env=env)
 
 # Deploy Pipeline stack
-PipelineStack(app, "PipelineStack", env=env)
+PipelineStack(app, "PipelineStack", env=env, api_stack=api_stack)
 
 app.synth()

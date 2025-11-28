@@ -8,7 +8,7 @@ from aws_cdk import (
 from constructs import Construct
 
 class PipelineStack(Stack):
-    def __init__(self, scope: Construct, id: str, **kwargs):
+    def __init__(self, scope: Construct, id: str, api_stack=None, **kwargs):
         super().__init__(scope, id, **kwargs)
 
         # Artifacts
@@ -21,7 +21,7 @@ class PipelineStack(Stack):
             owner="dearjay22",
             repo="Automated-Infrastructure-Deployment-with-AWS-CDK-CodePipeline",
             branch="main",
-            connection_arn="arn:aws:codestar-connections:us-east-1:141262319565:connection/915c367e-3387-496b-ac7b-8849d2629027",
+            connection_arn="arn:aws:codeconnections:us-east-1:141262319565:connection/915c367e-3387-496b-ac7b-8849d2629027",
             output=source_output
         )
 
