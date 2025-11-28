@@ -1,0 +1,16 @@
+version: 0.2
+phases:
+  install:
+    runtime-versions:
+      python: 3.13
+    commands:
+      - pip install --upgrade pip
+      - pip install -r requirements.txt
+      - npm install -g aws-cdk
+  build:
+    commands:
+      - cdk synth
+      - cdk deploy --all --require-approval never
+artifacts:
+  files:
+    - '**/*'
