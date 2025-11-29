@@ -8,7 +8,7 @@ from aws_cdk import (
 from constructs import Construct
 
 class PipelineStack(Stack):
-    def __init__(self, scope: Construct, id: str, api_stack=None, **kwargs):
+    def __init__(self, scope: Construct, id: str, **kwargs):
         super().__init__(scope, id, **kwargs)
 
         # Artifacts
@@ -42,8 +42,8 @@ class PipelineStack(Stack):
         # CloudFormation Deploy
         deploy_action = cp_actions.CloudFormationCreateUpdateStackAction(
             action_name="Deploy_CDK",
-            stack_name=api_stack.stack_name if api_stack else "ApiStack",
-            template_path=build_output.at_path("ApiStack.template.json"),
+            stack_name="ApiInfraStack",
+            template_path=build_output.at_path("ApiInfraStack.template.json"),
             admin_permissions=True
         )
 
