@@ -42,8 +42,8 @@ class PipelineStack(Stack):
         # CloudFormation Deploy
         deploy_action = cp_actions.CloudFormationCreateUpdateStackAction(
             action_name="Deploy_CDK",
-            stack_name=api_stack.stack_name if api_stack else "ApiStack9062044",
-            template_path=build_output.at_path("ApiStack9062044.template.json"),
+            stack_name=api_stack.stack_name if api_stack else "ApiStack",
+            template_path=build_output.at_path("ApiStack.template.json"),
             admin_permissions=True
         )
 
