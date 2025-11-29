@@ -117,3 +117,9 @@ This repository demonstrates an **automated AWS CDK infrastructure deployment** 
 ![alt text](Screenshots/image-12.png)
 
 ![alt text](Screenshots/image-13.png)
+
+
+# Cleanup
+![alt text](image.png)
+
+![alt text](image-1.png)
