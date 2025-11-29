@@ -12,6 +12,5 @@ phases:
       - cdk deploy --all --require-approval never
 artifacts:
   files:
-    - 'cdk.out/**/*'
-  name: Artifact_Build_CDK_Build
+    - cdk.out/**/*
   base-directory: cdk.out
