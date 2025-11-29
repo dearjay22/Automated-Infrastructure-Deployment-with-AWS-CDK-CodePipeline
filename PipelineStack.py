@@ -4,6 +4,8 @@ from aws_cdk import (
     aws_codepipeline_actions as cp_actions,
     aws_codebuild as codebuild,
     aws_iam as iam,
+    aws_s3 as s3,
+    RemovalPolicy
 )
 from constructs import Construct
 
@@ -13,7 +15,14 @@ class PipelineStack(Stack):
 
         # Artifacts
         source_output = codepipeline.Artifact()
-        build_output = codepipeline.Artifact()
+        build_output = codepipeline.Artifact(artifact_name="cdk_build_artifacts")
+
+        artifact_bucket = s3.Bucket(
+            self,
+            "ArtifactBucket",
+            removal_policy=RemovalPolicy.DESTROY,
+            auto_delete_objects=True
+        )
 
         # GitHub Source
         source_action = cp_actions.CodeStarConnectionsSourceAction(
@@ -51,7 +60,8 @@ class PipelineStack(Stack):
         pipeline = codepipeline.Pipeline(
             self,
             "Pipeline9062044",
-            pipeline_name="CDK-AutoDeploy-Pipeline-9062044"
+            pipeline_name="CDK-AutoDeploy-Pipeline-9062044",
+            artifact_bucket=artifact_bucket
         )
 
         pipeline.add_stage(stage_name="Source", actions=[source_action])
