@@ -9,8 +9,7 @@ phases:
   build:
     commands:
       # Make Python find your local package inside src/
-      - export PYTHONPATH=$PYTHONPATH:$CODEBUILD_SRC_DIR/src
-      - cd src
+      - export PYTHONPATH=$PYTHONPATH:$CODEBUILD_SRC_DIR
       - cdk synth
       - cdk deploy --require-approval never
 artifacts:
