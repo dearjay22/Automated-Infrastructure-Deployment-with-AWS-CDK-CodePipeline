@@ -8,8 +8,9 @@ phases:
       - npm install -g aws-cdk
   build:
     commands:
-      # Make Python find your local package
-      - export PYTHONPATH=$PYTHONPATH:$(pwd)
+      # Make Python find your local package inside src/
+      - export PYTHONPATH=$PYTHONPATH:$CODEBUILD_SRC_DIR/src
+      - cd src
       - cdk synth
       - cdk deploy --require-approval never
 artifacts:
